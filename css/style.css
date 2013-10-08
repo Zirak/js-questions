@@ -8,14 +8,20 @@ body {
 #editor {
     position : absolute;
 
-    top : 20%;
+    top : 15%;
     bottom : 30%;
     right : 2%;
     left : 2%;
 
     margin : 0;
 
-    font-size : 1em;
+    font-size : 1.5em;
+}
+
+#timer {
+    color : red;
+    font-size : 3em;
+    text-align : center; /* YOU GOT A PROBLEM? */
 }
 
 #run-button {
@@ -41,14 +47,15 @@ body {
     right : 2%;
 
     margin : 0;
+    padding : 10px;
 
     font-size : 1.2em;
     background : #ffffcc;
 
-    overflow-x : scroll;
+    overflow-y : scroll;
 }
 #log-wrapper .log-line {
-    margin : 4px;
+    padding : 4px;
 }
 #log-wrapper .log-line.log-pass {
     background : green;
