@@ -59,7 +59,13 @@ onmessage = function (evt) {
         }
         //and a horrible way to show strings
         function str (val) {
-            if (!val.toLowerCase) {
+            if (Array.isArray(val)) {
+                return strArray(val);
+            }
+            else if (val === null || val === undefined) {
+                return '' + val;
+            }
+            else if (!val || !val.toLowerCase) {
                 return val;
             }
             return '"' + val + '"';
