@@ -33,7 +33,7 @@ onmessage = function (evt) {
     function sendAssertion (form, result, expected) {
         var resp;
 
-        if (result === expected) {
+        if (equal(result, expected)) {
             resp = {
                 type : 'pass',
                 message : form + ' === ' + expected
@@ -49,6 +49,29 @@ onmessage = function (evt) {
         postMessage(resp);
     }
 };
+
+//loose equality
+function equal (left, right) {
+    if (left === right || Object(left) === Object(right)) {
+        return true;
+    }
+
+    //arrays
+    if (Array.isArray(left)) {
+        if (!Array.isArray(right) || left.length !== right.length) {
+            return false;
+        }
+
+        return left.every(function (item, idx) {
+            return equal(item, right[idx]);
+        });
+    }
+
+    //now, this is not a generic solution, this is tailored for the questions.
+    // we will only deal with primitives (and their objects) and arrays.
+    // so, we cheat.
+    return false;
+}
 
 function constructFunctionCall (name, param) {
     return name + '(' + param + ')';
