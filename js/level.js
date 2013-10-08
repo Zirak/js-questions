@@ -1,28 +1,76 @@
-//hahaha. this is so horrible. state everywhere.
+/*
+ __________________
+< This is horrible >
+ ------------------
+  \                 __
+   \               (oo)
+    \              (  )  <--- @OctavianDamiean
+     \             /--\
+       __         / \  \
+      UooU\.'@@@@@@`.\  )
+      \__/(@@@@@@@@@@) /
+           (@@@@@@@@)((
+           `YY~~~~YY' \\
+            ||    ||   >>
+*/
+
 var game = {
     level  : null,
+    editorElem : document.getElementById('editor'),
     editor : null,
     worker : null,
 
-    reset : function () {
-        this.editor = ace.edit('editor');
+    start : function () {
+        this.editor = ace.edit(this.editorElem);
         this.editor.setTheme('ace/theme/twilight');
         this.editor.getSession().setMode('ace/mode/javascript');
-
-        timer.stop();
     },
 
-    runCode : function (evt) {
-        console.log('running code');
-        timer.pause();
+    nextLevel : function () {
+        console.log('progressing level');
+        logger.clear();
+        this.level = this.levels.shift();
 
-        if (evt && evt.preventDefault) {
-            evt.preventDefault();
+        if (!this.level) {
+            this.win();
+            return;
         }
+
+        this.calibrateEditor();
+        logger.log(this.level.intro);
+        timer.play();
+    },
+
+    levelEnd : function (victory) {
+        if (victory) {
+            logger.log(this.level.outro);
+            ui.winLevel();
+        }
+        else {
+            ui.loseLevel()
+            timer.play();
+        }
+    },
+
+    runCode : function () {
+        timer.pause();
 
         if (!this.worker) {
             this.setupWorker();
         }
+
+        var victory;
+
+        this.worker.onmessage = function (evt) {
+            var type = evt.data.type;
+
+            if (type === 'finish') {
+                game.levelEnd(victory);
+            }
+            else {
+                victory = (type === 'pass');
+            }
+        };
 
         this.worker.postMessage({
             code : this.editor.getValue(),
@@ -31,20 +79,17 @@ var game = {
         });
     },
 
-    nextLevel : function () {
-        console.log('progressing level');
-        this.level = this.levels.shift();
-        this.calibrateEditor();
-        timer.play();
+    win : function () {
+        document.body.classList.add('win');
+        ui.winGame();
     },
 
     setupWorker : function () {
         this.worker = new Worker('js/evalWorker.js');
 
-        this.worker.onmessage = function (evt) {
-            console.log('worker.onmessage');
+        this.worker.addEventListener('message', function (evt) {
             logger.logWorkerEvent(evt);
-        };
+        });
     },
 
     calibrateEditor : function () {
@@ -58,10 +103,12 @@ var game = {
 
 game.levels = [
     {
-        text : 'Hit the button to the left, or Ctrl+Enter/Mac+Enter to submit',
+        intro : 'Hit the button to the left, or Ctrl+Enter/Mac+Enter to submit',
+        outro : 'That was too easy, wasn\'t it?',
         name : 'square',
 
-        code : ['box.square = function (x) {',
+        code : [
+            'box.square = function (x) {',
             '    //return x squared',
             '    ',
             '    ',
@@ -79,6 +126,32 @@ game.levels = [
             { param  :  1.5, result : 2.25 },
             { param  : -12,  result : 144 },
             { param  : -1.5, result : 2.25 }
+        ]
+    },
+
+    {
+        intro : 'A bit trickier now...',
+        outro : 'Great! Prepare yourself for the real challenge!',
+        name : 'sumDigits',
+
+        code : [
+            'box.sumDigits = function (x) {',
+            '    //sum the digits of x',
+            '    ',
+            '    ',
+            '};'
+        ].join('\n'),
+
+        cursor : { row : 3, column : 4 },
+
+        tests : [
+            { param :  2,    result : 2  },
+            { param :  412,  result : 7  },
+            { param :  8.19, result : 18 },
+            { param :  4.12, result : 7  },
+            { param : -0,    result : 0  },
+            { param : -14,   result : 5  },
+            { param : -1.4,  result : 5  },
         ]
     }
 ];
@@ -139,8 +212,13 @@ var logger = {
 
     logWorkerEvent : function (evt) {
         var data = evt.data,
-            line = this.createLine(data.message);
+            line;
 
+        if (data.type === 'finish') {
+            return;
+        }
+
+        line = this.createLine(data.message);
         line.classList.add('log-' + data.type);
         this.addLine(line);
     },
@@ -169,18 +247,62 @@ var logger = {
     }
 };
 
-document.getElementById('run-button').onclick = function (evt) {
-    game.runCode(evt);
+var ui = {
+    button : document.getElementById('run-button'),
+    state : 'prestart',
+
+    next : function () {
+        this[this.state].apply(this, arguments);
+    },
+
+    prestart : function () {
+        this.button.onclick = this.next.bind(this);;
+        this.button.textContent = 'Start';
+        this.state = 'start';
+    },
+
+    start : function () {
+        document.getElementById('beginPane').classList.add('hidden');
+        game.editorElem.classList.remove('hidden');
+        game.start();
+
+        this.level();
+    },
+
+    level : function () {
+        game.nextLevel();
+
+        this.button.textContent = 'Run';
+        this.state = 'run';
+    },
+
+    run : function () {
+        game.runCode();
+
+        this.state = 'nothing';
+    },
+
+    winLevel : function () {
+        this.button.textContent = 'Next';
+        this.state = 'level';
+    },
+    loseLevel : function () {
+        this.state = 'run';
+    },
+
+    winGame : function () {
+        game.editorElem.classList.add('hidden');
+        document.getElementById('endPane').classList.remove('hidden');
+    },
+
+    nothing : function () {},
 };
 
 document.onkeydown = function (evt) {
     var enterKeyCode = 13;
     if (evt.which === enterKeyCode && (evt.ctrlKey || evt.metaKey)) {
-        game.runCode(evt);
+        ui.next();
     }
 };
 
-game.reset();
-
-game.nextLevel();
-timer.reset();
+ui.next();

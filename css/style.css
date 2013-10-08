@@ -2,6 +2,7 @@ body {
     background : #141414;
     overflow : hidden;
 }
+.hidden { display : none; }
 
 /* css is not my thing */
 
@@ -18,10 +19,24 @@ body {
     font-size : 1.5em;
 }
 
+#beginPane, #endPane {
+    position : absolute;
+
+    top : 5%;
+    left : 10%;
+    right : 10%;
+
+    font-size : 2em;
+    color : #a6a6a6;
+}
+
 #timer {
     color : red;
     font-size : 3em;
     text-align : center; /* YOU GOT A PROBLEM? */
+}
+.win #timer {
+    color : green;
 }
 
 #run-button {

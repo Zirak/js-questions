@@ -8,9 +8,31 @@
 
 <body>
     <div id="timer"></div>
-    <pre id="editor"></pre>
-    <button id="run-button">Pump Awesome</button>
-    <div id="log-wrapper">Floop</div>
+
+    <div id="beginPane">
+        <p>
+            Welcome to a stupid clone of <a href="http://toys.usvsth3m.com/javascript-under-pressure/">You Can\'t JavaScript Under Pressure</a>. I'm less a fan of layout changes, social media, and bright colours.
+        </p>
+        <p>
+            Same principle:
+            <ul>
+                <li>Five questions</li>
+                <li>Ticking timer</li>
+            </ul>
+            Hit the giant button below to proceed a level or submit. You can also hit Ctrl+Enter (Cmd+Enter in Mac).
+        </p>
+    </div>
+
+    <div id="endPane" class="hidden">
+        <p>Awesome, you win!</p>
+    </div>
+
+    <pre id="editor" class="hidden"></pre>
+
+    <button id="run-button">Start</button>
+    <div id="log-wrapper">
+        <div class="log-line">Floop</div>
+    </div>
 
     <script src="js/ace-builds/src-noconflict/ace.js" charset="utf-8"></script>
     <script src="js/level.js"></script>

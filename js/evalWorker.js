@@ -25,6 +25,11 @@ onmessage = function (evt) {
         });
     }
 
+    postMessage({
+        type : 'finish',
+        message : 'Tests finished'
+    });
+
     function sendAssertion (form, result, expected) {
         var resp;
 
