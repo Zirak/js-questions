@@ -63,7 +63,7 @@ var game = {
             this.setupWorker();
         }
 
-        var victory;
+        var victory = true;
 
         this.worker.onmessage = function (evt) {
             var type = evt.data.type;
@@ -72,7 +72,7 @@ var game = {
                 game.levelEnd(victory);
             }
             else {
-                victory = (type === 'pass');
+                victory = victory && (type === 'pass');
             }
         };
 
