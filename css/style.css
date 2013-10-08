@@ -1,0 +1,61 @@
+body {
+    background : #141414;
+    overflow : hidden;
+}
+
+/* css is not my thing */
+
+#editor {
+    position : absolute;
+
+    top : 20%;
+    bottom : 30%;
+    right : 2%;
+    left : 2%;
+
+    margin : 0;
+
+    font-size : 1em;
+}
+
+#run-button {
+    position : absolute;
+
+    top : 75%;
+    bottom : 2%;
+    left : 2%;
+    right : 70%;
+
+    padding : 0;
+    margin : 0;
+
+    font-size : 2em;
+}
+
+#log-wrapper {
+    position : absolute;
+
+    top : 75%;
+    bottom : 2%;
+    left : 30.5%;
+    right : 2%;
+
+    margin : 0;
+
+    font-size : 1.2em;
+    background : #ffffcc;
+
+    overflow-x : scroll;
+}
+#log-wrapper .log-line {
+    margin : 4px;
+}
+#log-wrapper .log-line.log-pass {
+    background : green;
+}
+#log-wrapper .log-line.log-fail {
+    background : red;
+}
+#log-wrapper .log-line.log-error {
+    background : orange;
+}
