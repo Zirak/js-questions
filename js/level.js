@@ -140,7 +140,7 @@ game.levels = [
 
         code : [
             'box.sumDigits = function sumDigits (x) {',
-            '    //sum the digits of x',
+            '    //sum the digits of the number x',
             '    ',
             '    ',
             '};'
@@ -233,8 +233,11 @@ game.levels = [
         tests : [
             { param : [0, 1], result : 1 },
             { param : [-1, 4, 2], result : 0 },
+            { param : [10, 1, 100], result : 0 },
             { param : [0, -1, -100], result : -1 },
             { param : [-2, 4, 10, 19], result : 1 },
+            { param : [1, 11, 101], result : 1 },
+            { param : [101, 11, 1], result : -1 },
             { param : [14, -2, 1.5], result : 0 },
             { param : [18, 18.1, 19], result : 1 },
             { param : [0.9, 0.4, -0.1, -0.12, -1], result : -1 }

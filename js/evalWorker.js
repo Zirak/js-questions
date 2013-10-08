@@ -36,26 +36,33 @@ onmessage = function (evt) {
         if (equal(result, expected)) {
             resp = {
                 type : 'pass',
-                message : form + ' === ' + expected
+                message : form + ' === ' + strArray(expected)
             };
         }
         else {
             resp = {
                 type : 'fail',
                 message : form +
-                    ' expected ' + str(expected) +
-                    ', got ' + str(result)
+                    ' expected ' + strArray(expected) +
+                    ', got ' + strArray(result)
             };
         }
 
         postMessage(resp);
 
         //horrible way to show arrays nicely
-        function str (val) {
+        function strArray (val) {
             if (!Array.isArray(val)) {
-                return val;
+                return str(val);
             }
             return '[' + val.map(str) + ']';
+        }
+        //and a horrible way to show strings
+        function str (val) {
+            if (!val.toLowerCase) {
+                return val;
+            }
+            return '"' + val + '"';
         }
     }
 };
