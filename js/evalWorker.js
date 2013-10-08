@@ -42,11 +42,21 @@ onmessage = function (evt) {
         else {
             resp = {
                 type : 'fail',
-                message : form + ' expected ' + expected + ', got ' + result
+                message : form +
+                    ' expected ' + str(expected) +
+                    ', got ' + str(result)
             };
         }
 
         postMessage(resp);
+
+        //horrible way to show arrays nicely
+        function str (val) {
+            if (!Array.isArray(val)) {
+                return val;
+            }
+            return '[' + val.map(str) + ']';
+        }
     }
 };
 
@@ -74,5 +84,5 @@ function equal (left, right) {
 }
 
 function constructFunctionCall (name, param) {
-    return name + '(' + param + ')';
+    return name + '(' + JSON.stringify(param) + ')';
 }

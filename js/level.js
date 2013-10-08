@@ -112,7 +112,7 @@ game.levels = [
         name : 'square',
 
         code : [
-            'box.square = function (x) {',
+            'box.square = function square (x) {',
             '    //return x squared',
             '    ',
             '    ',
@@ -139,7 +139,7 @@ game.levels = [
         name : 'sumDigits',
 
         code : [
-            'box.sumDigits = function (x) {',
+            'box.sumDigits = function sumDigits (x) {',
             '    //sum the digits of x',
             '    ',
             '    ',
@@ -165,7 +165,7 @@ game.levels = [
         name : 'flatten',
 
         code : [
-            'box.flatten = function (x) {',
+            'box.flatten = function flatten (x) {',
             '    // x is an arbitrarily nested, multidimensional array.',
             '    // return x flattened (all items in 1 dimension)',
             '    ',
@@ -192,7 +192,7 @@ game.levels = [
         name : 'mode',
 
         code : [
-            'box.mode = function (x){',
+            'box.mode = function mode (x) {',
             '    // x is an array of at least 1 item.',
             '    // return the most frequent item (there will be no collisions)',
             '    ',
@@ -219,7 +219,7 @@ game.levels = [
         name : 'sortingType',
 
         code : [
-            'box.sortingType = function (x) {',
+            'box.sortingType = function sortingType (x) {',
             '    // x is an array of at least 2 unique members',
             '    // return 0 if it\'s not sorted, 1 if it\'s ascending, ' +
                 ' -1 if it\'s descending',
