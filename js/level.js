@@ -106,148 +106,25 @@ var game = {
         this.editor.focus();
         this.editor.clearSelection();
         this.editor.moveCursorToPosition(this.level.cursor);
+    },
+
+    loadLevels : function () {
+        var xhr = new XMLHttpRequest(),
+            self = this;
+        xhr.open('GET', '/js/levels.json');
+
+        logger.log('Loading levels...');
+
+        xhr.onload = function () {
+            self.levels = JSON.parse(xhr.responseText);
+
+            ui.prestart();
+            logger.log('Finished loading levels. Proceed.');
+        };
+
+        xhr.send();
     }
 };
-
-game.levels = [
-    {
-        intro : 'Hit the button to the left, or Ctrl+Enter/Mac+Enter to submit',
-        outro : 'That was too easy, wasn\'t it?',
-        name : 'square',
-
-        code : [
-            'box.square = function square (x) {',
-            '    //return x squared',
-            '    ',
-            '    ',
-            '};'
-        ].join('\n'),
-
-        cursor : {
-            row : 3,
-            column : 4
-        },
-
-        tests : [
-            { param  :  2,   result : 4 },
-            { param  :  4,   result : 16 },
-            { param  :  1.5, result : 2.25 },
-            { param  : -12,  result : 144 },
-            { param  : -1.5, result : 2.25 }
-        ]
-    },
-
-    {
-        intro : 'A bit trickier now...',
-        outro : 'Great! Prepare yourself for the real challenge!',
-        name : 'sumDigits',
-
-        code : [
-            'box.sumDigits = function sumDigits (x) {',
-            '    //sum the digits of the number x',
-            '    ',
-            '    ',
-            '};'
-        ].join('\n'),
-
-        cursor : { row : 3, column : 4 },
-
-        tests : [
-            { param :  2,    result : 2  },
-            { param :  412,  result : 7  },
-            { param :  8.19, result : 18 },
-            { param :  4.12, result : 7  },
-            { param : -0,    result : 0  },
-            { param : -14,   result : 5  },
-            { param : -1.4,  result : 5  },
-        ]
-    },
-
-    {
-        intro : 'This is harder than the original, yes.',
-        outro : 'Good work, but we\'re not done yet!',
-        name : 'flatten',
-
-        code : [
-            'box.flatten = function flatten (x) {',
-            '    // x is an arbitrarily nested, multidimensional array.',
-            '    // return x flattened (all items in 1 dimension)',
-            '    ',
-            '    ',
-            '};'
-        ].join('\n'),
-
-        cursor : { row : 4, column : 4 },
-
-        tests : [
-            { param : [], result : [] },
-            { param : [0, 1, 2], result : [0, 1, 2] },
-            { param : [[], 0, [1]], result : [0, 1] },
-            {
-                param : [0, [[[[[1, [2]]]]], 3], [4, [5]]],
-                result : [0, 1, 2, 3, 4, 5]
-            }
-        ],
-    },
-
-    {
-        intro : 'One before last, you can do it!',
-        outro : 'Good job! But are you ready for the last challenge...?',
-        name : 'mode',
-
-        code : [
-            'box.mode = function mode (x) {',
-            '    // x is an array of at least 1 item.',
-            '    // return the most frequent item (there will be no collisions)',
-            '    ',
-            '    ',
-            '};'
-        ].join('\n'),
-
-        cursor : { row : 4, column : 4 },
-
-        tests : [
-            { param : [0], result : 0 },
-            { param : [0, 1, 1, 2], result : 1 },
-            {
-                param : [{}, 0, [1], 'foo', true, false, null, true],
-                result : true
-            }
-            //needs more
-        ]
-    },
-
-    {
-        intro : 'Final one! Good luck!',
-        outro : 'Congrats, you win!',
-        name : 'sortingType',
-
-        code : [
-            'box.sortingType = function sortingType (x) {',
-            '    // x is an array of at least 2 unique members',
-            '    // return 0 if it\'s not sorted, 1 if it\'s ascending, ' +
-                ' -1 if it\'s descending',
-            '    ',
-            '    ',
-            '};'
-        ].join('\n'),
-
-        cursor : { row : 4, column : 4 },
-
-        tests : [
-            { param : [0, 1], result : 1 },
-            { param : [-1, 4, 2], result : 0 },
-            { param : [10, 1, 100], result : 0 },
-            { param : [0, -1, -100], result : -1 },
-            { param : [-2, 4, 10, 19], result : 1 },
-            { param : [1, 11, 101], result : 1 },
-            { param : [101, 11, 1], result : -1 },
-            { param : [14, -2, 1.5], result : 0 },
-            { param : [18, 18.1, 19], result : 1 },
-            { param : [0.9, 0.4, -0.1, -0.12, -1], result : -1 }
-        ]
-    }
-];
 
 var timer = {
     elem : document.getElementById('timer'),
@@ -300,6 +177,7 @@ var logger = {
     elem : document.getElementById('log-wrapper'),
 
     log : function (text) {
+        console.log(text);
         this.addLine(this.createLine(text));
     },
 
@@ -342,7 +220,7 @@ var logger = {
 
 var ui = {
     button : document.getElementById('run-button'),
-    state : 'prestart',
+    state : 'nothing',
 
     next : function () {
         this[this.state].apply(this, arguments);
@@ -398,4 +276,4 @@ document.onkeydown = function (evt) {
     }
 };
 
-ui.next();
+game.loadLevels();

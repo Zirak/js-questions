@@ -1,0 +1,100 @@
+[
+    {
+        "intro" : "Hit the button to the left, or Ctrl+Enter/⌘+Enter to submit",
+        "outro" : "That was too easy, wasn't it?",
+        "name" : "square",
+
+        "code" : "box.square = function square (x) {\n    //return x squared\n    \n    \n};",
+
+        "cursor" : { "row" : 3, "column" : 4 },
+
+        "tests" : [
+            { "param" :  2,   "result" : 4    },
+            { "param" :  4,   "result" : 16   },
+            { "param" :  1.5, "result" : 2.25 },
+            { "param" : -12,  "result" : 144  },
+            { "param" : -1.5, "result" : 2.25 }
+        ]
+    },
+    {
+        "intro" : "A bit trickier now...",
+        "outro" : "Great! Prepare yourself for the real challenge!",
+        "name" : "sumDigits",
+
+        "code" : "box.sumDigits = function sumDigits (x) {\n    //sum the digits of the number x\n    \n    \n};",
+
+        "cursor" : { "row" : 3, "column" : 4 },
+
+        "tests" : [
+            { "param" : 2,    "result" : 2  },
+            { "param" : 412,  "result" : 7  },
+            { "param" : 8.19, "result" : 18 },
+            { "param" : 4.12, "result" : 7  },
+            { "param" : 0,    "result" : 0  },
+            { "param" : -14,  "result" : 5  },
+            { "param" : -1.4, "result" : 5  }
+        ]
+    },
+    {
+        "intro" : "This is harder than the original, yes.",
+        "outro" : "Good work, but we're not done yet!",
+        "name" : "flatten",
+
+        "code" : "box.flatten = function flatten (x) {\n    // x is an arbitrarily nested, multidimensional array.\n    // return x flattened (all items in 1 dimension)\n    \n    \n};",
+
+        "cursor" : { "row" : 4, "column" : 4 },
+
+        "tests" : [
+            { "param" : [], "result" : [] },
+            { "param" : [0, 1, 2], "result" : [0, 1, 2] },
+            { "param" : [[], 0, [1]], "result" : [0, 1] },
+            {
+                "param"  : [0, [[[[[1, [2]]]]], 3], [4, [5]]],
+                "result" : [0, 1, 2, 3, 4, 5]
+            }
+        ]
+    },
+    {
+        "intro" : "One before last, you can do it!",
+        "outro" : "Good job! But are you ready for the last challenge...?",
+        "name" : "mode",
+
+        "code" : "box.mode = function mode (x) {\n    // x is an array of at least 1 item.\n    // return the most frequent item (there will be no collisions)\n    \n    \n};",
+
+        "cursor" : { "row" : 4, "column" : 4 },
+
+        "tests" : [
+            { "param" : [0], "result" : 0 },
+            { "param" : [0, 1, 1, 2], "result" : 1 },
+            {
+                "param"  : [{}, 0, [1], "foo", true, false, null, true],
+                "result" : true
+            }
+        ]
+    },
+    {
+        "intro" : "Final one! Good luck!",
+        "outro" : "Congrats, you win!",
+        "name" : "sortingType",
+
+        "code" : "box.sortingType = function sortingType (x) {\n    // x is an array of at least 2 unique members\n    // return 0 if it's not sorted, 1 if it's ascending,  -1 if it's descending\n    \n    \n};",
+
+        "cursor" : {
+            "row" : 4,
+            "column" : 4
+        },
+
+        "tests" : [
+            { "param" : [0,1],           "result" :  1 },
+            { "param" : [-1, 4, 2],      "result" :  0 },
+            { "param" : [10, 1, 100],    "result" :  0 },
+            { "param" : [0, -1, -100],   "result" : -1 },
+            { "param" : [-2, 4, 10, 19], "result" :  1 },
+            { "param" : [1, 11, 101],    "result" :  1 },
+            { "param" : [101, 11, 1],    "result" : -1 },
+            { "param" : [14, -2, 1.5],   "result" :  0 },
+            { "param" : [18, 18.1, 19],  "result" :  1 },
+            { "param" : [0.9, 0.4, -0.1, -0.12, -1], "result" : -1 }
+        ]
+    }
+]
