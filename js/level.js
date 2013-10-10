@@ -16,14 +16,22 @@
 
 var game = {
     level  : null,
-    editorElem : document.getElementById('editor'),
+    editorElem : document.getElementById('main-editor'),
     editor : null,
+
+    finalEditorElem : document.getElementById('ending-editor'),
+    finalEditor : null,
+
     worker : null,
 
     start : function () {
         this.editor = ace.edit(this.editorElem);
         this.editor.setTheme('ace/theme/twilight');
         this.editor.getSession().setMode('ace/mode/javascript');
+
+        this.finalEditor = ace.edit(this.finalEditorElem);
+        this.finalEditor.setTheme('ace/theme/twilight');
+        this.finalEditor.getSession().setMode('ace/mode/javascript');
     },
 
     nextLevel : function () {
@@ -227,13 +235,14 @@ var ui = {
     },
 
     prestart : function () {
+        this.button.disabled = false;
         this.button.onclick = this.next.bind(this);;
         this.button.textContent = 'Start';
         this.state = 'start';
     },
 
     start : function () {
-        document.getElementById('beginPane').classList.add('hidden');
+        document.getElementById('begin-pane').classList.add('hidden');
         game.editorElem.classList.remove('hidden');
         game.start();
 
@@ -254,6 +263,12 @@ var ui = {
     },
 
     winLevel : function () {
+        game.finalEditor.setValue(
+            game.finalEditor.getValue() +
+                game.editor.getValue() +
+                "\n\n");
+        game.finalEditor.clearSelection();
+
         this.button.textContent = 'Next';
         this.state = 'level';
     },
@@ -263,7 +278,10 @@ var ui = {
 
     winGame : function () {
         game.editorElem.classList.add('hidden');
-        document.getElementById('endPane').classList.remove('hidden');
+        this.button.classList.add('hidden');
+        logger.elem.classList.add('hidden');
+
+        document.getElementById('end-pane').classList.remove('hidden');
     },
 
     nothing : function () {},

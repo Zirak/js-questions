@@ -1,5 +1,5 @@
 body {
-    background-image: url('escheresque-dark.png');
+    background-image : url('escheresque-dark.png');
     overflow : hidden;
     font-family : helvetica, arial, sans-serif;
 }
@@ -18,19 +18,27 @@ a:hover {
 
 /* css is not my thing */
 
-#editor {
+#main-editor.editor, #ending-editor.editor {
     position : absolute;
 
     top : 10%;
     bottom : 32%;
-    right : 2%;
     left : 2%;
+    right : 2%;
 
     margin : 0;
     font-size : 1.5em;
+    text-align : left;
 }
 
-#beginPane, #endPane {
+#ending-editor.editor {
+    /* lulz */
+    top : 12%;
+    bottom : 0%;
+    font-size : 1.2em;
+}
+
+#begin-pane {
     position : absolute;
     background-image : url('escheresque-light.png');
 
@@ -44,12 +52,15 @@ a:hover {
     border : 1px solid;
     border-width : 1px;
 }
-#endPane {
+
+#end-pane {
+    height : 100%;
     color : white;
     background-image : inherit;
     border : inherit;
 
     text-align : center;
+    font-size : 1.2em;
 }
 
 #timer {

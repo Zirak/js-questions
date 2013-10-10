@@ -8,9 +8,9 @@
 
 <body>
     <div id="timer"></div>
-    <div id="winCount"></div>
+    <div id="win-count"></div>
 
-    <div id="beginPane">
+    <div id="begin-pane">
         <p>
             Welcome to a stupid clone of <a href="http://toys.usvsth3m.com/javascript-under-pressure/">You Can't JavaScript Under Pressure</a>. I'm less a fan of layout changes, social media, and bright colours.
         </p>
@@ -27,13 +27,15 @@
         </p>
     </div>
 
-    <div id="endPane" class="hidden">
-        <p>Awesome, you win!</p>
+    <div id="end-pane" class="hidden">
+        <p>Awesome, you win! Your answers:</p>
+
+        <pre id="ending-editor" class="editor"></pre>
     </div>
 
-    <pre id="editor" class="hidden"></pre>
+    <pre id="main-editor" class="editor hidden"></pre>
 
-    <button id="run-button">Start</button>
+    <button id="run-button" disabled>Start</button>
     <div id="log-wrapper">
         <div class="log-line">Floop</div>
     </div>
