@@ -1,24 +1,43 @@
 var box = {};
 
+var console = {
+    log : function () {
+        var args = [].slice.call(arguments);
+        postMessage({
+            type : 'log',
+            message : 'Log: ' + args.map(str).join(' ')
+        });
+    }
+};
+
 onmessage = function (evt) {
     var code = evt.data.code,
         name = evt.data.name,
-        tests = evt.data.tests;
+        tests = evt.data.tests,
+
+        stringCall;
 
     try {
-        eval(code);
+        Function(code)();
 
         var fun = box[name];
         if (!fun) {
             throw 'Function ' + name + ' not defined on box';
         }
 
-        tests.forEach(function(test) {
-            var stringCall = constructFunctionCall(name, test.param);
+        tests.forEach(function runTest (test) {
+            stringCall = constructFunctionCall(name, test.param);
             sendAssertion(stringCall, fun(test.param), test.result);
         });
     }
     catch (e) {
+        if (stringCall) {
+            postMessage({
+                type : 'error',
+                message : 'In ' + stringCall + ' : '
+            });
+        }
+
         postMessage({
             type : 'error',
             message : e.toString()
@@ -36,43 +55,36 @@ onmessage = function (evt) {
         if (equal(result, expected)) {
             resp = {
                 type : 'pass',
-                message : form + ' === ' + strArray(expected)
+                message : form + ' = ' + str(expected)
             };
         }
         else {
             resp = {
                 type : 'fail',
                 message : form +
-                    ' expected ' + strArray(expected) +
-                    ', got ' + strArray(result)
+                    ' expected ' + str(expected) +
+                    ', got ' + str(result)
             };
         }
 
         postMessage(resp);
-
-        //horrible way to show arrays nicely
-        function strArray (val) {
-            if (!Array.isArray(val)) {
-                return str(val);
-            }
-            return '[' + val.map(str) + ']';
-        }
-        //and a horrible way to show strings
-        function str (val) {
-            if (Array.isArray(val)) {
-                return strArray(val);
-            }
-            else if (val === null || val === undefined) {
-                return '' + val;
-            }
-            else if (!val || !val.toLowerCase) {
-                return val;
-            }
-            return '"' + val + '"';
-        }
     }
 };
 
+//horrible way to show arrays and strings nicely. we can't use JSON.stringify
+// since it turns some valid js values (NaN, undefined, dates, ...) into null.
+function str (val) {
+    if (Array.isArray(val)) {
+        return '[' + val.map(str) + ']';
+    }
+    else if (val === null || val === undefined) {
+        return '' + val;
+    }
+    else if (!val || !val.toLowerCase) {
+        return val;
+    }
+    return '"' + val + '"';
+}
 //loose equality
 function equal (left, right) {
     if (left === right || Object(left) === Object(right)) {
@@ -85,7 +97,7 @@ function equal (left, right) {
             return false;
         }
 
-        return left.every(function (item, idx) {
+        return left.every(function testArrayItemEquality (item, idx) {
             return equal(item, right[idx]);
         });
     }

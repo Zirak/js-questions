@@ -58,6 +58,8 @@ var game = {
 
     runCode : function () {
         timer.pause();
+        logger.clear();
+        logger.log(this.level.intro);
 
         if (!this.worker) {
             this.setupWorker();
@@ -65,14 +67,15 @@ var game = {
 
         var victory = true;
 
+        logger.log('Testing...');
         this.worker.onmessage = function (evt) {
             var type = evt.data.type;
 
             if (type === 'finish') {
                 game.levelEnd(victory);
             }
-            else {
-                victory = victory && (type === 'pass');
+            else if (type === 'fail' || type === 'error') {
+                victory = false;
             }
         };
 
@@ -85,6 +88,7 @@ var game = {
 
     win : function () {
         document.body.classList.add('win');
+        //timer.pause();
         ui.winGame();
     },
 

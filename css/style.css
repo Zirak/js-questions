@@ -9,7 +9,7 @@ body {
 #editor {
     position : absolute;
 
-    top : 15%;
+    top : 10%;
     bottom : 30%;
     right : 2%;
     left : 2%;
@@ -42,7 +42,7 @@ body {
 #run-button {
     position : absolute;
 
-    top : 75%;
+    top : 70%;
     bottom : 2%;
     left : 2%;
     right : 70%;
@@ -56,13 +56,12 @@ body {
 #log-wrapper {
     position : absolute;
 
-    top : 75%;
+    top : 70%;
     bottom : 2%;
     left : 30.5%;
     right : 2%;
 
     margin : 0;
-    padding : 10px;
 
     font-size : 1.2em;
     background : #ffffcc;
@@ -72,12 +71,21 @@ body {
 #log-wrapper .log-line {
     padding : 4px;
 }
+
+/* first two colours stolen from QUnit */
 #log-wrapper .log-line.log-pass {
-    background : green;
+    background : #5e740b;
 }
 #log-wrapper .log-line.log-fail {
-    background : red;
+    background : #710909;
+    color : white;
 }
 #log-wrapper .log-line.log-error {
-    background : orange;
+    background : #b06000;
 }
+#log-wrapper .log-line.log-log /* log log */ {
+    background : #8699a4;
+    /* log log, log log */
+}
+/* log log log? */
+/* how much log could a log log log if a log log could log log? */
