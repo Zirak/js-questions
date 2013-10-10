@@ -111,7 +111,7 @@ var game = {
     loadLevels : function () {
         var xhr = new XMLHttpRequest(),
             self = this;
-        xhr.open('GET', '/js/levels.json');
+        xhr.open('GET', 'js/levels.json');
 
         logger.log('Loading levels...');
 

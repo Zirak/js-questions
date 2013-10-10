@@ -1,5 +1,5 @@
 body {
-    background-image: url('/css/escheresque-dark.png');
+    background-image: url('escheresque-dark.png');
     overflow : hidden;
     font-family : helvetica, arial, sans-serif;
 }
@@ -32,7 +32,7 @@ a:hover {
 
 #beginPane, #endPane {
     position : absolute;
-    background-image : url('/css/escheresque-light.png');
+    background-image : url('escheresque-light.png');
 
     /* I'm going to hell for this. but it looks so nice */
     top : 42px;
