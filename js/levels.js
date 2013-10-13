@@ -38,13 +38,15 @@ game.levels = [
         "cursor" : { "row" : 3, "column" : 4 },
 
         "tests" : [
-            { "param" : 2,    "result" : 2  },
-            { "param" : 412,  "result" : 7  },
-            { "param" : 8.19, "result" : 18 },
-            { "param" : 4.12, "result" : 7  },
-            { "param" : 0,    "result" : 0  },
-            { "param" : -14,  "result" : 5  },
-            { "param" : -1.4, "result" : 5  }
+            { "param" : 2,     "result" : 2  },
+            { "param" : 412,   "result" : 7  },
+            { "param" : 8.19,  "result" : 18 },
+            { "param" : 4.12,  "result" : 7  },
+            { "param" : 0,     "result" : 0  },
+            { "param" : -14,   "result" : 5  },
+            { "param" : -1.4,  "result" : 5  },
+            { "param" : 1e100, "result" : 1  },
+            { "param" : 4e-100,"result" : 4  }
         ]
     },
     {
@@ -74,7 +76,59 @@ game.levels = [
         ]
     },
     {
-        "intro" : "One before last, you can do it!",
+        "intro" : "We haven't had a string question yet!",
+        "outro" : "A freshmen comp-sci teacher would be proud.",
+        "name" : "isBalanced",
+
+        "code" : [
+            "box.isBalanced = function isBalanced (x) {",
+            "    // x is a string. return whether its parentheses are balanced",
+            "    // that is, whether every opening ( has a closing )",
+            "    ",
+            "    ",
+            "};"
+        ].join("\n"),
+
+        "cursor" : { "row" : 4, "column" : 4 },
+
+        "tests" : [
+            { "param" : "", "result" : true },
+            { "param" : "(", "result" : false },
+            { "param" : ")", "result" : false },
+            { "param" : "()", "result" : true },
+            { "param" : "(1)", "result" : true },
+            { "param" : ")(", "result" : false },
+            { "param" : "((a()b)c(l(pnq))())", "result" : true },
+            { "param" : "((a()b)c(l(pnq))()", "result" : false }
+        ]
+    },
+    {
+        "intro" : "Don't you just love arrays?",
+        "outro" : "Sorry about the tests cases, I suck at them.",
+        "name" : "hasBalancePoint",
+
+        "code" : [
+            "box.hasBalancePoint = function hasBalancePoint (x) {",
+            "    // x is an array of numbers. return whether there is an index where the sum",
+            "    // before (excluding) it is equal to the sum after (including) it.",
+            "    ",
+            "    ",
+            "};"
+        ].join("\n"),
+
+        cursor : { "row" : 4, "column" : 4 },
+
+        "tests" : [
+            // ...I'm not good at making these up
+            { "param" : [],  "result" : true },
+            { "param" : [0], "result" : true },
+            { "param" : [42, 6, 19, 11, 11, 7], "result" : true },
+            { "param" : [1, 2], "result" : false }
+            // ...see? told you
+        ]
+    },
+    {
+        "intro" : "Closer to the end, more explicit operations",
         "outro" : "Good job! But are you ready for the last challenge...?",
         "name" : "mode",
 
