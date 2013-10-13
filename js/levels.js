@@ -94,10 +94,10 @@ game.levels = [
         "tests" : [
             { "param" : "", "result" : true },
             { "param" : "(", "result" : false },
-            { "param" : ")", "result" : false },
             { "param" : "()", "result" : true },
             { "param" : "(1)", "result" : true },
             { "param" : ")(", "result" : false },
+            { "param" : "())(()", "result" : false },
             { "param" : "((a()b)c(l(pnq))())", "result" : true },
             { "param" : "((a()b)c(l(pnq))()", "result" : false }
         ]
