@@ -49,6 +49,14 @@ var game = {
         timer.play();
     },
 
+    skipLevel : function () {
+        console.log('skipping level');
+        if (ui.state === 'run') {
+            this.levels.skipped += 1;
+        }
+        this.nextLevel();
+    },
+
     levelEnd : function (victory) {
         if (victory) {
             logger.log(this.level.outro);
@@ -96,7 +104,7 @@ var game = {
 
     win : function () {
         document.body.classList.add('win');
-        //timer.pause();
+        timer.pause();
         ui.winGame();
     },
 
@@ -117,20 +125,22 @@ var game = {
     },
 
     loadLevels : function () {
-        var xhr = new XMLHttpRequest(),
+        var script = document.createElement('script'),
             self = this;
-        xhr.open('GET', 'js/levels.json');
+
+        script.src = 'js/levels.js';
 
         logger.log('Loading levels...');
 
-        xhr.onload = function () {
-            self.levels = JSON.parse(xhr.responseText);
+        script.onload = function () {
+            self.levels.skipped = 0;
+            self.levels.total = self.levels.length;
 
             ui.prestart();
             logger.log('Finished loading levels. Proceed.');
         };
 
-        xhr.send();
+        document.body.appendChild(script);
     }
 };
 
@@ -139,15 +149,22 @@ var timer = {
 
     interval : 100,
     time : 0,
+    running : false,
 
     play : function () {
+        if (this.running) {
+            console.log('play: already running');
+            return;
+        }
+
         console.log('play');
         this.intervalId = setInterval(this.tick.bind(this), this.interval);
-        console.log('interval id:', this.intervalId);
+        this.running = true;
     },
     pause : function () {
         console.log('pause', this.intervalId);
         clearInterval(this.intervalId);
+        this.running = false;
     },
     reset : function () {
         console.log('reset');
@@ -185,7 +202,6 @@ var logger = {
     elem : document.getElementById('log-wrapper'),
 
     log : function (text) {
-        console.log(text);
         this.addLine(this.createLine(text));
     },
 
@@ -223,11 +239,13 @@ var logger = {
         while (child = this.elem.firstElementChild) {
             this.elem.removeChild(child);
         }
+        //sue me
+        this.log(this.prefix);
     }
 };
+logger.prefix = logger.elem.textContent;
 
 var ui = {
-    button : document.getElementById('run-button'),
     state : 'nothing',
 
     next : function () {
@@ -235,9 +253,6 @@ var ui = {
     },
 
     prestart : function () {
-        this.button.disabled = false;
-        this.button.onclick = this.next.bind(this);;
-        this.button.textContent = 'Start';
         this.state = 'start';
     },
 
@@ -252,7 +267,6 @@ var ui = {
     level : function () {
         game.nextLevel();
 
-        this.button.textContent = 'Run';
         this.state = 'run';
     },
 
@@ -269,28 +283,76 @@ var ui = {
                 "\n\n");
         game.finalEditor.clearSelection();
 
-        this.button.textContent = 'Next';
         this.state = 'level';
     },
     loseLevel : function () {
         this.state = 'run';
     },
 
+    skipLevel : function () {
+        if (this.state === 'level') {
+            this.next();
+        }
+        else if (this.state === 'run') {
+            game.skipLevel();
+        }
+        else {
+            logger.log('You can\'t really skip anything at this point');
+        }
+    },
+
     winGame : function () {
         game.editorElem.classList.add('hidden');
-        this.button.classList.add('hidden');
         logger.elem.classList.add('hidden');
-
         document.getElementById('end-pane').classList.remove('hidden');
+
+        document.getElementById('ending-text').textContent = genWinText();
+
+        this.state = 'win';
+
+        function genWinText () {
+            var done = 1 - game.levels.skipped / game.levels.total,
+                suffix = 'Your answers:',
+                msg;
+
+            if (done === 0) {
+                msg = 'You didn\'t even try...';
+                suffix = 'Your answers (or lack thereof):';
+            }
+            else if (done < 0.5) {
+                msg = 'Oh, you know you can do more than that!';
+            }
+            else if (done < 0.75) {
+                msg = 'So close! Give it another go, you can do it!';
+            }
+            else if (done < 1) {
+                msg = 'Great, you got most of the questions! But why not ' +
+                    'go for gold?'
+            }
+            else {
+                msg = 'Awesome, you win!';
+            }
+
+            return msg + ' ' + suffix;
+        }
     },
 
     nothing : function () {},
 };
 
 document.onkeydown = function (evt) {
-    var enterKeyCode = 13;
-    if (evt.which === enterKeyCode && (evt.ctrlKey || evt.metaKey)) {
-        ui.next();
+    var enterKeyCode = 13,
+        qKeyCode = 81,
+
+        key = evt.which;
+
+    if (evt.ctrlKey || evt.metaKey) {
+        if (key === enterKeyCode) {
+            ui.next();
+        }
+        else if (key === qKeyCode) {
+            ui.skipLevel();
+        }
     }
 };
 

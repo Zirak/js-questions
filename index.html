@@ -20,7 +20,7 @@
                 <li>Five questions</li>
                 <li>Ticking timer</li>
             </ul>
-            Hit the giant button below to proceed a level or submit. You can also hit Ctrl+Enter (Cmd+Enter in Mac).
+            Hit Ctrl+Enter (⌘+Enter on Mac) to proceed a level or submit, (Ctrl/⌘)+Esc to skip a level.
         </p>
         <p>
             Source and complaints: <a href="https://github.com/Zirak/js-questions">Zirak/js-questions</a>
@@ -28,19 +28,21 @@
     </div>
 
     <div id="end-pane" class="hidden">
-        <p>Awesome, you win! Your answers:</p>
+        <p id="ending-text">Awesome, you made it! Your answers:</p>
 
         <pre id="ending-editor" class="editor"></pre>
     </div>
 
     <pre id="main-editor" class="editor hidden"></pre>
 
-    <button id="run-button" disabled>Start</button>
     <div id="log-wrapper">
-        <div class="log-line">Floop</div>
+        <div class="log-line">
+            Ctrl+Enter/⌘+Enter to continue,
+            (Ctrl/+⌘)+Q to skip.
+        </div>
     </div>
 
     <script src="js/ace-builds/src-noconflict/ace.js" charset="utf-8"></script>
-    <script src="js/level.js"></script>
+    <script src="js/game.js"></script>
 </body>
 </html>

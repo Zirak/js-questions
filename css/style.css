@@ -74,26 +74,12 @@ a:hover {
     text-shadow : -1px -1px 4px rgba(150, 255, 150, 1)
 }
 
-#run-button {
-    position : absolute;
-
-    top    : 70%;
-    bottom : 2%;
-    left   : 2%;
-    right  : 70%;
-
-    padding : 0;
-    margin : 0;
-
-    font-size : 4em;
-}
-
 #log-wrapper {
     position : absolute;
 
     top    : 70%;
     bottom : 2%;
-    left   : 30.5%;
+    left   : 2%;
     right  : 2%;
 
     margin  : 0;

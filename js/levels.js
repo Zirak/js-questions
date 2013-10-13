@@ -1,10 +1,16 @@
-[
+game.levels = [
     {
-        "intro" : "Hit the button to the left, or Ctrl+Enter/⌘+Enter to submit",
+        "intro" : "We'll start off with something easy.",
         "outro" : "That was too easy, wasn't it?",
         "name" : "square",
 
-        "code" : "box.square = function square (x) {\n    //return x squared\n    \n    \n};",
+        "code" : [
+            "box.square = function square (x) {",
+            "    //return x squared",
+            "    ",
+            "    ",
+            "};"
+        ].join("\n"),
 
         "cursor" : { "row" : 3, "column" : 4 },
 
@@ -21,7 +27,13 @@
         "outro" : "Great! Prepare yourself for the real challenge!",
         "name" : "sumDigits",
 
-        "code" : "box.sumDigits = function sumDigits (x) {\n    //sum the digits of the number x\n    \n    \n};",
+        "code" : [
+            "box.sumDigits = function sumDigits (x) {",
+            "    //sum the digits of the number x",
+            "    ",
+            "    ",
+            "};"
+        ].join("\n"),
 
         "cursor" : { "row" : 3, "column" : 4 },
 
@@ -40,7 +52,14 @@
         "outro" : "Good work, but we're not done yet!",
         "name" : "flatten",
 
-        "code" : "box.flatten = function flatten (x) {\n    // x is an arbitrarily nested, multidimensional array.\n    // return x flattened (all items in 1 dimension)\n    \n    \n};",
+        "code" : [
+            "box.flatten = function flatten (x) {",
+            "    // x is an arbitrarily nested, multidimensional array.",
+            "    // return x flattened (all items in 1 dimension)",
+            "    ",
+            "    ",
+            "};"
+        ].join("\n"),
 
         "cursor" : { "row" : 4, "column" : 4 },
 
@@ -59,7 +78,14 @@
         "outro" : "Good job! But are you ready for the last challenge...?",
         "name" : "mode",
 
-        "code" : "box.mode = function mode (x) {\n    // x is an array of at least 1 item.\n    // return the most frequent item (there will be no collisions)\n    \n    \n};",
+        "code" : [
+            "box.mode = function mode (x) {",
+            "    // x is an array of at least 1 item.",
+            "    // return the most frequent item (there won't be collisions)",
+            "    ",
+            "    ",
+            "};"
+        ].join("\n"),
 
         "cursor" : { "row" : 4, "column" : 4 },
 
@@ -77,7 +103,15 @@
         "outro" : "Congrats, you win!",
         "name" : "sortingType",
 
-        "code" : "box.sortingType = function sortingType (x) {\n    // x is an array of at least 2 unique members\n    // return 0 if it's not sorted, 1 if it's ascending,  -1 if it's descending\n    \n    \n};",
+        "code" :[
+            "box.sortingType = function sortingType (x) {",
+            "    // x is an array of at least 2 unique members",
+            "    // return 0 if it's not sorted, 1 if it's ascending, " +
+                " -1 if it's descending",
+            "    ",
+            "    ",
+            "};"
+        ].join("\n"),
 
         "cursor" : {
             "row" : 4,
