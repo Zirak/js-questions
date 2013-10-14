@@ -36,25 +36,34 @@ var game = {
 
     nextLevel : function () {
         console.log('progressing level');
-        logger.clear();
         this.level = this.levels.shift();
 
         if (!this.level) {
             this.win();
-            return;
         }
+        else {
+            this.playLevel();
+        }
+    },
+    playLevel : function () {
+        logger.clear();
 
         this.calibrateEditor();
         logger.log(this.level.intro);
+
+        timer.store();
         timer.play();
     },
 
     skipLevel : function () {
         console.log('skipping level');
-        if (ui.state === 'run') {
-            this.levels.skipped += 1;
-        }
+        this.levels.skipped += 1;
         this.nextLevel();
+    },
+
+    restartLevel : function () {
+        timer.restore();
+        this.playLevel();
     },
 
     levelEnd : function (victory) {
@@ -81,19 +90,32 @@ var game = {
             this.setupWorker();
         }
 
-        var victory = true;
+        var victory = true,
+            self = this,
+            timeout;
 
         logger.log('Testing...');
         this.worker.onmessage = function (evt) {
             var type = evt.data.type;
 
             if (type === 'finish') {
-                game.levelEnd(victory);
+                clearTimeout(timeout);
+                self.levelEnd(victory);
             }
             else if (type === 'fail' || type === 'error') {
                 victory = false;
             }
         };
+
+        timeout = setTimeout(function () {
+            logger.logWorkerEvent({
+                type : 'error',
+                message : 'Timeout: Execution exceeded 1 second'
+            });
+
+            self.worker.terminate();
+            self.levelEnd(false);
+        }, 1000);
 
         this.worker.postMessage({
             code : this.editor.getValue(),
@@ -112,7 +134,7 @@ var game = {
         this.worker = new Worker('js/evalWorker.js');
 
         this.worker.addEventListener('message', function (evt) {
-            logger.logWorkerEvent(evt);
+            logger.logWorkerEvent(evt.data);
         });
     },
 
@@ -149,6 +171,7 @@ var timer = {
 
     interval : 100,
     time : 0,
+    saved : null,
     running : false,
 
     play : function () {
@@ -174,6 +197,13 @@ var timer = {
         console.log('stop');
         this.pause();
         this.reset();
+    },
+
+    store : function () {
+        this.saved = this.time;
+    },
+    restore : function () {
+        this.time = this.saved;
     },
 
     tick : function () {
@@ -205,9 +235,8 @@ var logger = {
         this.addLine(this.createLine(text));
     },
 
-    logWorkerEvent : function (evt) {
-        var data = evt.data,
-            line;
+    logWorkerEvent : function (data) {
+        var line;
 
         if (data.type === 'finish') {
             return;
@@ -301,6 +330,15 @@ var ui = {
         }
     },
 
+    restartLevel : function () {
+        if (this.state === 'run' || this.state === 'level') {
+            game.restartLevel();
+        }
+        else {
+            logger.log('What exactly is it that you want to restart?');
+        }
+    },
+
     winGame : function () {
         game.editorElem.classList.add('hidden');
         logger.elem.classList.add('hidden');
@@ -341,17 +379,23 @@ var ui = {
 };
 
 document.onkeydown = function (evt) {
-    var enterKeyCode = 13,
-        qKeyCode = 81,
-
-        key = evt.which;
+    var key = evt.which;
+    var keys = {
+        enter : 13,
+        Q : 81,
+        R : 82
+    };
 
     if (evt.ctrlKey || evt.metaKey) {
-        if (key === enterKeyCode) {
+        if (key === keys.enter) {
             ui.next();
         }
-        else if (key === qKeyCode) {
+        else if (key === keys.Q) {
             ui.skipLevel();
+        }
+        else if (key === keys.R) {
+            evt.preventDefault();
+            ui.restartLevel();
         }
     }
 };
