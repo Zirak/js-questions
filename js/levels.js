@@ -24,6 +24,29 @@ game.levels = [
     },
     {
         "intro" : "A bit trickier now...",
+        "outro" : "This was actually a problem I had. My solution looked...cleaner...",
+        "name" : "invertCase",
+
+        "code" : [
+            "box.invertCase = function invertCase (x) {",
+            "    // x is a string. turn lowercase letters to uppercase and vice versa.",
+            "    ",
+            "    ",
+            "};"
+        ].join("\n"),
+
+        "cursor" : { "row" : 3, "column" : 4 },
+
+        "tests" : [
+            { "param" : "funkey monkey", "result" : "FUNKEY MONKEY" },
+            { "param" : "MONKEY MAGIC",  "result" : "monkey magic" },
+            { "param" : "FlIrPyDuck",    "result" : "fLiRpYdUCK" },
+            { "param" : "", "result" : "" },
+            // WELL I RAN OUT OF IDEAS K?
+        ]
+    },
+    {
+        "intro" : "Tricky tricky rice is sticky.",
         "outro" : "Great! Prepare yourself for the real challenge!",
         "name" : "sumDigits",
 
