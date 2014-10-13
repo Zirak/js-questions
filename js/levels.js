@@ -67,9 +67,7 @@ game.levels = [
             { "param" : 4.12,  "result" : 7  },
             { "param" : 0,     "result" : 0  },
             { "param" : -14,   "result" : 5  },
-            { "param" : -1.4,  "result" : 5  },
-            { "param" : 1e100, "result" : 1  },
-            { "param" : 4e-100,"result" : 4  }
+            { "param" : -1.4,  "result" : 5  }
         ]
     },
     {
